@@ -1,3 +1,7 @@
+require_relative 'line'
+require_relative 'polygon'
+require_relative 'vector'
+
 def mult(a, b)
     new = Array.new(b.length) {Array.new(a[0].length, 0)}
     a[0].length.times {|i|
@@ -44,12 +48,22 @@ def add_edge(matrix, x0, y0, z0, x1, y1, z1)
     add_point(matrix, x1, y1, z1)
 end
 
-def draw_matrix(ary, matrix)
+def draw_matrix(ary, matrix, type)
     new = ary.map {|a| a}
-    matrix.each_slice(2) {|s|
-        draw_line(new, s[0][0].to_f, s[0][1].to_f, s[1][0].to_f, s[1][1].to_f)
-    }
-    ary.replace(new)
+    if type == 0 # edges
+        matrix.each_slice(2) {|s|
+            draw_line(new, s[0][0].to_f, s[0][1].to_f, s[1][0].to_f, s[1][1].to_f)
+        }
+        ary.replace(new)
+    elsif type == 1 # triangle
+        matrix.each_slice(3) {|t|
+            if normal(*(t.map{|x| x.slice(0..-2)}.flatten))[2] > 0
+                draw_triangle(new, t[0][0].to_f, t[0][1].to_f, t[1][0].to_f, t[1][1].to_f, t[2][0].to_f, t[2][1].to_f)
+            end
+        }
+        ary.replace(new)
+    end
 end
+
 
 # what if god said write a connect_edge method that repeats the last point and then adds a new point

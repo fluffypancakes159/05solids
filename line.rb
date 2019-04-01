@@ -1,5 +1,5 @@
-XRES = 600 # variables with capital first letter are constants
-YRES = 600
+XRES = 700 # variables with capital first letter are constants
+YRES = 700
 
 def draw_line(ary, x0, y0, x1, y1)
     if x0 > x1
